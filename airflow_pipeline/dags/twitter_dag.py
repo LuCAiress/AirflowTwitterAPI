@@ -16,7 +16,7 @@ with DAG(
         query = "data science"
         
         to = TwitterOperator(
-            file_path=os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'airflow_pipeline', 'datalake', 'twitter_datascience')),
+            file_path=os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','datalake', 'twitter_datascience')),
                            "extract_date={{ ds }}",
                            "datascience_{{ ds_nodash }}.json"),                       
             query=query, 
