@@ -40,4 +40,11 @@ with DAG(
                                                                   "--process-date", "{{ ds }}"]
                                                 )
         
-        twitter_operator >> twitter_transform
+        twitter_insight = SparkSubmitOperator(task_id="insight_twitter",
+                                            application="/home/lucaires/Documentos/airflow_twitter/src/spark/insight_tweet.py",
+                                            name="insight_twitter",
+                                            application_args=["--src", BASE_FOLDER.format(stage="Silver", partition=""),
+                                                              "--dest", BASE_FOLDER.format(stage="Gold", partition=""),
+                                                              "--process-date", "{{ ds }}"])
+        
+        twitter_operator >> twitter_transform >> twitter_insight
