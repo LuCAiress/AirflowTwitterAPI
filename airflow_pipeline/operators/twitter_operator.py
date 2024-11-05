@@ -47,7 +47,7 @@ if __name__ == "__main__":
         schedule=timedelta(days=1)
     ) as dag:
         to = TwitterOperator(
-            file_path=os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'airflow_twitter', 'datalake', 'twitter_datascience')),
+            file_path=join("datalake/bronze/twitter_datascience",
                            f"extract_date={datetime.now().date()}",
                            f"datascience_{datetime.now().date().strftime('%Y%m%d')}.json"),                       
             query=query, 

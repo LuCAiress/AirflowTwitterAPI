@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from os.path import join
 from airflow.models import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from datetime import datetime, timedelta
@@ -17,7 +18,7 @@ with DAG(
         query = "data science"
         
         twitter_operator = TwitterOperator(
-            file_path=os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','datalake', 'twitter_datascience')),
+            file_path=join("datalake/bronze/twitter_datascience",
                            "extract_date={{ ds }}",
                            "datascience_{{ ds_nodash }}.json"),                       
             query=query, 
@@ -29,8 +30,8 @@ with DAG(
         twitter_transform = SparkSubmitOperator(task_id="transform_twitter_datascience",
                                                 application="/home/lucaires/Documentos/airflow_twitter/src/spark/transformation.py",
                                                 name="twitter_transformation",
-                                                application_args=["--src", "/home/lucaires/Documentos/airflow_twitter/datalake/twitter_datascience", 
-                                                                  "--dest", "/home/lucaires/Documentos/airflow_twitter/dados_transformation",
+                                                application_args=["--src", "datalake/bronze/twitter_datascience", 
+                                                                  "--dest", "datalake/silver/twitter_datascience",
                                                                   "--process-date", "{{ ds }}"]
                                                 )
         
